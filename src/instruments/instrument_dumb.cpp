@@ -20,13 +20,13 @@ InstrumentDumb::InstrumentDumb(const std::string &param)
   KeyValue kv(param);
   int N;
 
-  if (!kv.to_int("N",N))
+  if (!kv.to_int("N",N)) //Si no ha encontrado el valor de N en el instrumento le asigna el valor 40
     N = 40; //default value
   
   //Create a tbl with one period of a sinusoidal wave
   tbl.resize(N);
-  float phase = 0, step = 2 * M_PI /(float) N;
-  index = 0;
+  float phase = 0, step = 2 * M_PI /(float) N; //genera sinusoide. si en lugar de eso ponemos diente de sierra sonará distinto
+  //index = 0;
   for (int i=0; i < N ; ++i) {
     tbl[i] = sin(phase);
     phase += step;
@@ -38,7 +38,9 @@ void InstrumentDumb::command(long cmd, long note, long vel) {
   if (cmd == 9) {		//'Key' pressed: attack begins
     bActive = true;
     adsr.start();
-    index = 0;
+    A = vel/127.;
+    this->step = 440*pow(2, (note-69)/12.)*tbl.size()/SamplingRate;
+    //index = 0;
 	A = vel / 127.;
   }
   else if (cmd == 8) {	//'Key' released: sustain ends, release begins
@@ -60,9 +62,13 @@ const vector<float> & InstrumentDumb::synthesize() {
     return x;
 
   for (unsigned int i=0; i<x.size(); ++i) {
-    x[i] = A * tbl[index++];
-    if (index == tbl.size())
-      index = 0;
+    x[i] = A * tbl[(int) phase+0.5];
+    phase += step;
+    while(phase >= tbl.size()-0.5){
+      phase -= tbl.size();
+    }
+    //if (index == tbl.size())
+    //  index = 0;
   }
   adsr(x); //apply envelope to x and update internal status of ADSR
 
