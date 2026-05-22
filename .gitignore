@@ -1,1 +1,6 @@
 /build/
+.venv/
+work/.venv/
+*.Zone.Identifier
+work/.venv/
+*.Zone.Identifier
