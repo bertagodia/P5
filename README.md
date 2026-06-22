@@ -45,17 +45,17 @@ colocar etiquetas y títulos adecuados en la propia gráfica (se valorará posit
 
 ### Gráficas de las Envolventes ADSR
 
-#### 1. Instrumento Genérico
-![Instrumento Genérico](Ejercicio1-1.png)
+  #### 1. Instrumento Genérico
+    ![Instrumento Genérico](grafics/Ejercicio1-1.png)
 
-#### 2. Piano Rápido (Extinción Lenta)
-![Piano Rápido](Ejercicio1-2.png)
+  #### 2. Piano Rápido (Extinción Lenta)
+    ![Piano Rápido](grafics/Ejercicio1-2.png)
 
-#### 3. Piano Lento (Nota Cortada)
-![Piano Lento](Ejercicio1-3.png)
+  #### 3. Piano Lento (Nota Cortada)
+    ![Piano Lento](grafics/Ejercicio1-3.png)
 
-#### 4. Instrumento Plano
-![Instrumento Plano](Ejercicio1-4.png)
+  #### 4. Instrumento Plano
+    ![Instrumento Plano](grafics/Ejercicio1-4.png)
 
 
 ### Instrumentos Dumb y Seno.
@@ -153,9 +153,9 @@ mediante búsqueda de los valores en una tabla.
 
     Esta es la gráfica en la que se ven claramente los valores de la tabla y los de la señal generada:
 
-   Se puede observar como los puntos de color azul representan el contenido estático y fijo almacenado en la tabla de ondas (tbl), y se ve la forma de un ciclo discreto de la función senosoidal pura. Por otro lado, las pelotitas de color rojo representan las muestras consecutivas de la señal de audio generadas en el tiempo por el método synthesize(). Como el incremento de fase (step) es mayor que 1, el motor de audio lee la tabla saltándose posiciones de manera indexada, logrando así generar una señal periódica de una frecuencia superior (más aguda).
+    Se puede observar como los puntos de color azul representan el contenido estático y fijo almacenado en la tabla de ondas (tbl), y se ve la forma de un ciclo discreto de la función senosoidal pura. Por otro lado, las pelotitas de color rojo representan las muestras consecutivas de la señal de audio generadas en el tiempo por el método synthesize(). Como el incremento de fase (step) es mayor que 1, el motor de audio lee la tabla saltándose posiciones de manera indexada, logrando así generar una señal periódica de una frecuencia superior (más aguda).
 
-    ![Gráfica de Síntesis por Tabla de Ondas](Ejercicio2.png)
+    ![Gráfica de Síntesis por Tabla de Ondas](grafics/Ejercicio2.png)
 
 
 - Si ha implementado la síntesis por tabla almacenada en fichero externo, incluya a continuación el código
@@ -173,11 +173,11 @@ mediante búsqueda de los valores en una tabla.
 
     El trémolo es un efecto que consiste en variar el volumen (la amplitud) de una señal de forma periódica y automática. En cambio, el vibrato es una técnica que consiste en variar la afinación (la frecuencia) de un sonido de forma periódica, rápida y sutil. 
 
-    ![Gráfica Trémolo](grafica_tremolo.png)
+    ![Gráfica Trémolo](grafics/grafica_tremolo.png)
 
     Se puede ver como la aplitud de la onda va aumentando y disminuyendo, porque está cambiando el volumen del señal
 
-    ![Gráfica Vibrato](grafica_vibrato.png)
+    ![Gráfica Vibrato](grafics/grafica_vibrato.png)
 
     Aquí se ve como en un ciclo la longitud de onda va cambiando haciendo que cambie la nota.
 
@@ -203,7 +203,7 @@ deberá venir expresado en semitonos.
     ejemplo, violines, pianos, percusiones, espadas láser de la
 	[Guerra de las Galaxias](https://www.starwars.com/), etc.
  
-  ##### Creación de los instrumentos 
+  #### Creación de los instrumentos 
 
     En la carpeta work/doremi se pueden observar algunos ficheros .wav representando a diferentes instrumentos. Hemos creado el clarinete, la campana, el piano, el violín, la percusión y el fagot.
 
