@@ -43,18 +43,18 @@ añadir la información necesaria para su correcta interpretación, aunque esa i
 colocar etiquetas y títulos adecuados en la propia gráfica (se valorará positivamente esta alternativa).
 
 
-## Gráficas de las Envolventes ADSR
+### Gráficas de las Envolventes ADSR
 
-### 1. Instrumento Genérico
+#### 1. Instrumento Genérico
 ![Instrumento Genérico](Ejercicio1-1.png)
 
-### 2. Piano Rápido (Extinción Lenta)
+#### 2. Piano Rápido (Extinción Lenta)
 ![Piano Rápido](Ejercicio1-2.png)
 
-## 3. Piano Lento (Nota Cortada)
+#### 3. Piano Lento (Nota Cortada)
 ![Piano Lento](Ejercicio1-3.png)
 
-### 4. Instrumento Plano
+#### 4. Instrumento Plano
 ![Instrumento Plano](Ejercicio1-4.png)
 
 
@@ -142,9 +142,7 @@ const vector<float> & Seno::synthesize() {
 ```
 
 
-- Explique qué método se ha seguido para asignar un valor a la señal a partir de los contenidos en la tabla,
-  e incluya una gráfica en la que se vean claramente (use pelotitas en lugar de líneas) los valores de la
-  tabla y los de la señal generada.
+- Explique qué método se ha seguido para asignar un valor a la señal a partir de los contenidos en la tabla, e incluya una gráfica en la que se vean claramente (use pelotitas en lugar de líneas) los valores de la tabla y los de la señal generada.
 
 
   Para asignar un valor a la señal de audio a partir de los contenidos discretos de la tabla de ondas (tbl), el instrumento utiliza el método de Redondeo de Fase al entero más cercano. Como el incremento que tiene la fase es un valor decimal, puede ser que la variable phase acabe teniendo valores no enteros. Como el acceso a los índices de un vector en C++ necesita un valor entero lo que hace el programa es rendondear al entero inferior más cercano. De esta forma, si el valor de la fase es 2,2 o 2,8 el vector le asignará el valor de 2, cuando 2,8 se aproxima más a 3. Para evitar esto lo que se hace es sumarle 0,5 para que el valor de la fase se acabe redondeando al entero más cercano:
@@ -223,7 +221,7 @@ Use el programa `synth` para generar canciones a partir de su partitura MIDI. Co
 
   Para la orquestación del tema *You've got a friend in me*, se ha configurado un arreglo polifónico a dos pistas en el archivo `toystory.orc`. El objetivo de los parámetros seleccionados es simular un **piano** para la línea melódica principal y un **fagot** (instrumento de viento madera grave) para el acompañamiento:
 
-  ##### Canal 1: Melodía (Simulación de Piano)
+  #### Canal 1: Melodía (Simulación de Piano)
   ```cpp
       1   FMSynth     N1=1.0; N2=1.0; I=6.0; ADSR_A=0.01; ADSR_D=1.5; ADSR_S=0.15; ADSR_R=0.4; N=40;`
   ```
@@ -234,26 +232,28 @@ Use el programa `synth` para generar canciones a partir de su partitura MIDI. Co
     *   **`ADSR_R=0.4` (Release rápido):** Apagado natural de la cuerda (400 ms) al soltar la tecla.
     *   **`N=40`:** Tamaño de la tabla (mantenido por compatibilidad de lectura del programa).
 
-     ##### Canal 2: Bajo (Simulación de Fagot)
+  #### Canal 2: Bajo (Simulación de Fagot)
     ```cpp
           2   FMSynth     N1=1.0; N2=0.5; I=8.0; ADSR_A=0.08; ADSR_D=0.4; ADSR_S=0.7; ADSR_R=0.3; N=40;`
     ```
     
-      *   **`N1=1.0; N2=0.5` (Relación 1:0.5):** Genera subarmónicos graves para dar el sonido con cuerpo y madera típico del fagot.
-      *   **`I=8.0` (Índice de modulación):** Aumenta los armónicos medios para dar definición al bajo dentro de la mezcla general.
-      *   **`ADSR_A=0.08` (Ataque intermedio):** Retardo de 80 ms simulando la entrada de aire y vibración de la lengüeta en un viento madera.
-      *   **`ADSR_D=0.4; ADSR_S=0.7` (Decay rápido y Sustain alto):** Mantiene la nota de bajo con volumen constante (70%) mientras se sostiene.
-      *   **`ADSR_R=0.3` (Release rápido):** Extinción ágil del sonido (300 ms) para evitar que las notas graves se solapen.
+    *   **`N1=1.0; N2=0.5` (Relación 1:0.5):** Genera subarmónicos graves para dar el sonido con cuerpo y madera típico del fagot.
+    *   **`I=8.0` (Índice de modulación):** Aumenta los armónicos medios para dar definición al bajo dentro de la mezcla general.
+    *   **`ADSR_A=0.08` (Ataque intermedio):** Retardo de 80 ms simulando la entrada de aire y vibración de la lengüeta en un viento madera.
+    *   **`ADSR_D=0.4; ADSR_S=0.7` (Decay rápido y Sustain alto):** Mantiene la nota de bajo con volumen constante (70%) mientras se sostiene.
+    *   **`ADSR_R=0.3` (Release rápido):** Extinción ágil del sonido (300 ms) para evitar que las notas graves se solapen.
 
   #### Generación de la señal
+
+   Si estamos en el directorio general, es decir PAV/P5 el comando es el siguiente:
+    ```sh
+        ~/PAV/bin/synth -g 0.3 work/music/toystory.orc work/music/ToyStory_A_Friend_in_me.sco work/music/toystory.wav     
+    ```
     Estando en el directorio work/music/ el comando es :
     ```sh
       ~/PAV/bin/synth -g 0.3 toystory.orc ToyStory_A_Friend_in_me.sco toystory.wav 
     ```
-    Si estamos en el directorio general, es decir PAV/P5 el comando es el siguiente:
-    ```sh
-        ~/PAV/bin/synth -g 0.3 work/music/toystory.orc work/music/ToyStory_A_Friend_in_me.sco work/music/toystory.wav     
-    ```
+
     Esta orden ejecuta el programa synth para sintetizar el archivo de audio toystory.wav a partir de la partitura de notas (ToyStory_A_Friend_in_me.sco) y la asignación de instrumentos de la orquesta (toystory.orc). Se ha incluido el parámetro de ganancia -g 0.3 porque, al sonar el solista y el bajo simultáneamente, la suma de ambas señales superaba la amplitud máxima digital de 1.0, provocando saturación y distorsión (clipping). Con un factor de 0.3 se atenúa la mezcla final para garantizar un sonido limpio y sin ruido.
 
 También puede orquestar otros temas más complejos, como la banda sonora de *Hawaii5-0* o el villacinco de
