@@ -148,17 +148,22 @@ const vector<float> & Seno::synthesize() {
 
 
   Para asignar un valor a la señal de audio a partir de los contenidos discretos de la tabla de ondas (tbl), el instrumento utiliza el método de Redondeo de Fase al entero más cercano. Como el incremento que tiene la fase es un valor decimal, puede ser que la variable phase acabe teniendo valores no enteros. Como el acceso a los índices de un vector en C++ necesita un valor entero lo que hace el programa es rendondear al entero inferior más cercano. De esta forma, si el valor de la fase es 2,2 o 2,8 el vector le asignará el valor de 2, cuando 2,8 se aproxima más a 3. Para evitar esto lo que se hace es sumarle 0,5 para que el valor de la fase se acabe redondeando al entero más cercano:
-
+```cp
   x[i] = A * tbl[(int)(phase + 0.5)];
-
+```
 
   Esta es la gráfica en la que se ven claramente los valores de la tabla y los de la señal generada:
+
+  Se puede observar como los puntos de color azul representan el contenido estático y fijo almacenado en la tabla de ondas (tbl), y se ve la forma de un ciclo discreto de la función senosoidal pura. Por otro lado, las pelotitas de color rojo representan las muestras consecutivas de la señal de audio generadas en el tiempo por el método synthesize(). Como el incremento de fase (step) es mayor que 1, el motor de audio lee la tabla saltándose posiciones de manera indexada, logrando así generar una señal periódica de una frecuencia superior (más aguda).
 
   ![Gráfica de Síntesis por Tabla de Ondas](Ejercicio2.png)
 
 
 - Si ha implementado la síntesis por tabla almacenada en fichero externo, incluya a continuación el código
   del método `command()`.
+
+  Como no se realiza una lectura de archivos de audio externos (como archivos de texto con muestras o ficheros .wav), no se ha implementado la síntesis por fichero externo, por lo que el método command() no requiere de nada adicional.
+  
 
 ### Efectos sonoros.
 
