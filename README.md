@@ -228,6 +228,12 @@ deberá venir expresado en semitonos.
     N2 define la frecuencia de la moduladora: fm = N2 · f0. En vibrato, fm es la velocidad del vibrato (cuántas veces por segundo oscila el tono).
     I (en semitonos) define cuánto se desvía el tono. Se convierte a Hz con Δf = fc · (2^(I/12) - 1).
 
+    En este caso, en la gráfica superior se puede observar la señal en el dominio del tiempo (los ciclos de la onda sonora a 267 Hz aproximadamente). Va tan rápido que no se puede ver el vibrato directamente, solo se ve una masa de oscilaciones.
+
+    En cambio, en la parte inferior se pude ver la frecuencia instantánea: muestra cómo varía la frecuencia a lo largo del tiempo. Aquí sí se ve el vibrato claramente, ya que se puede ver como la curva naranja sube y baja lentamente a ritmo de fm=5.3 Hz.
+
+    ![Gráfica Vibrato](grafics/Ejercicio4.png)
+
 - Use el instrumento para generar un sonido tipo clarinete y otro tipo campana. Tome los parámetros del
   sonido (N1, N2 e I) y de la envolvente ADSR del citado artículo. Con estos sonidos, genere sendas escalas
   diatónicas (fichero `doremi.sco`) y ponga el resultado en los ficheros `work/doremi/clarinete.wav` y
