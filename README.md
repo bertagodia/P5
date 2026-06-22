@@ -235,9 +235,9 @@ Use el programa `synth` para generar canciones a partir de su partitura MIDI. Co
     *   **`N=40`:** Tamaño de la tabla (mantenido por compatibilidad de lectura del programa).
 
      ##### Canal 2: Bajo (Simulación de Fagot)
-      ```cpp
+    ```cpp
           2   FMSynth     N1=1.0; N2=0.5; I=8.0; ADSR_A=0.08; ADSR_D=0.4; ADSR_S=0.7; ADSR_R=0.3; N=40;`
-      ```
+    ```
     
       *   **`N1=1.0; N2=0.5` (Relación 1:0.5):** Genera subarmónicos graves para dar el sonido con cuerpo y madera típico del fagot.
       *   **`I=8.0` (Índice de modulación):** Aumenta los armónicos medios para dar definición al bajo dentro de la mezcla general.
@@ -247,13 +247,13 @@ Use el programa `synth` para generar canciones a partir de su partitura MIDI. Co
 
   #### Generación de la señal
     Estando en el directorio work/music/ el comando es :
-      ```sh
+    ```sh
       ~/PAV/bin/synth -g 0.3 toystory.orc ToyStory_A_Friend_in_me.sco toystory.wav 
-      ```
+    ```
     Si estamos en el directorio general, es decir PAV/P5 el comando es el siguiente:
-      ```sh
+    ```sh
         ~/PAV/bin/synth -g 0.3 work/music/toystory.orc work/music/ToyStory_A_Friend_in_me.sco work/music/toystory.wav     
-      ```
+    ```
     Esta orden ejecuta el programa synth para sintetizar el archivo de audio toystory.wav a partir de la partitura de notas (ToyStory_A_Friend_in_me.sco) y la asignación de instrumentos de la orquesta (toystory.orc). Se ha incluido el parámetro de ganancia -g 0.3 porque, al sonar el solista y el bajo simultáneamente, la suma de ambas señales superaba la amplitud máxima digital de 1.0, provocando saturación y distorsión (clipping). Con un factor de 0.3 se atenúa la mezcla final para garantizar un sonido limpio y sin ruido.
 
 También puede orquestar otros temas más complejos, como la banda sonora de *Hawaii5-0* o el villacinco de
