@@ -14,6 +14,7 @@ sources = [
 	'effects/tremolo.cpp',
 	'effects/vibrato.cpp',
 	'effects/staccato.cpp',
+	'effects/delay.cpp',
 ]
 
 executable(

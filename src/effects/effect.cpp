@@ -2,6 +2,7 @@
 #include "tremolo.h"
 #include "vibrato.h"
 #include "staccato.h"
+#include "delay.h"
 
 /*
   For each new effect:
@@ -25,6 +26,10 @@ namespace upc {
     else if (name == "Staccato") {
       pEffect = (Effect *) new Staccato(parameters);
     }
+    else if (name == "Delay") {
+      pEffect = (Effect *) new Delay(parameters);
+    }
     return pEffect;
   }
 }
+
