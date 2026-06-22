@@ -163,7 +163,7 @@ const vector<float> & Seno::synthesize() {
   del método `command()`.
 
   Como no se realiza una lectura de archivos de audio externos (como archivos de texto con muestras o ficheros .wav), no se ha implementado la síntesis por fichero externo, por lo que el método command() no requiere de nada adicional.
-  
+
 
 ### Efectos sonoros.
 
@@ -171,6 +171,17 @@ const vector<float> & Seno::synthesize() {
   sinusoidal. Deberá explicar detalladamente cómo se manifiestan los parámetros del efecto (frecuencia e
   índice de modulación) en la señal generada (se valorará que la explicación esté contenida en las propias
   gráficas, sin necesidad de mucha *literatura*).
+
+El trémolo es un efecto que consiste en variar el volumen (la amplitud) de una señal de forma periódica y automática. En cambio, el vibrato es una técnica que consiste en variar la afinación (la frecuencia) de un sonido de forma periódica, rápida y sutil. 
+
+![Gráfica Trémolo](grafica_tremolo.png)
+
+Se puede ver como la aplitud de la onda va aumentando y disminuyendo, porque está cambiando el volumen del señal
+
+![Gráfica Vibrato](grafica_vibrato.png)
+
+Aquí se ve como en un ciclo la longitud de onda va cambiando haciendo que cambie la nota.
+
 - Si ha generado algún efecto por su cuenta, explique en qué consiste, cómo lo ha implementado y qué
   resultado ha producido. Incluya, en el directorio `work/ejemplos`, los ficheros necesarios para apreciar
   el efecto, e indique, a continuación, la orden necesaria para generar los ficheros de audio usando el
