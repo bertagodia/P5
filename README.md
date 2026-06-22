@@ -226,7 +226,7 @@ deberá venir expresado en semitonos.
 
     N1 define la frecuencia de la portadora: fc = N1 · f0. Con N1=1, la nota que suenas es exactamente f0.
     N2 define la frecuencia de la moduladora: fm = N2 · f0. En vibrato, fm es la velocidad del vibrato (cuántas veces por segundo oscila el tono).
-    I (en semitonos) define cuánto se desvía el tono. Se convierte a Hz con Δf = fc · (2^(I/12) - 1).
+    I (en semitonos) define cuánto se desvía el tono. 
 
     En este caso, en la gráfica superior se puede observar la señal en el dominio del tiempo (los ciclos de la onda sonora a 267 Hz aproximadamente). Va tan rápido que no se puede ver el vibrato directamente, solo se ve una masa de oscilaciones.
 
