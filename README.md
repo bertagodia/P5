@@ -65,97 +65,97 @@ mediante búsqueda de los valores en una tabla.
 
 - Incluya, a continuación, el código del fichero `seno.cpp` con los métodos de la clase Seno.
 
-```cpp
-#include <iostream>
-#include <math.h>
-#include "seno.h"
-#include "keyvalue.h"
-#include <stdlib.h>
+  ```cpp
+    #include <iostream>
+    #include <math.h>
+    #include "seno.h"
+    #include "keyvalue.h"
+    #include <stdlib.h>
 
-using namespace upc;
-using namespace std;
+    using namespace upc;
+    using namespace std;
 
-// Constructor: Inicializa la tabla de ondas con un ciclo de seno
-Seno::Seno(const std::string &param) 
-  : adsr(SamplingRate, param) {
-  bActive = false;
-  x.resize(BSIZE);
+    // Constructor: Inicializa la tabla de ondas con un ciclo de seno
+    Seno::Seno(const std::string &param) 
+      : adsr(SamplingRate, param) {
+      bActive = false;
+      x.resize(BSIZE);
 
-  KeyValue kv(param);
-  int N;
+      KeyValue kv(param);
+      int N;
 
-  if (!kv.to_int("N", N)) 
-    N = 40; // Valor por defecto si no encuentra N
-  
-  tbl.resize(N);
-  float phase_init = 0, step_init = 2 * M_PI / (float)N;
-  
-  for (int i = 0; i < N; ++i) {
-    tbl[i] = sin(phase_init);
-    phase_init += step_init;
-  }
-  phase = 0;
-}
-
-// Gestión de eventos MIDI (pulsar/soltar tecla)
-void Seno::command(long cmd, long note, long vel) {
-  if (cmd == 9) {   // Key pressed: inicia el ataque
-    bActive = true;
-    adsr.start();
-    A = vel / 127.0;
-    // Cálculo del incremento de fase posicional según la frecuencia de la nota
-    this->step = 440 * pow(2, (note - 69) / 12.0) * tbl.size() / SamplingRate;
-  }
-  else if (cmd == 8) {  // Key released: inicia el release
-    adsr.stop();
-  }
-  else if (cmd == 0) {  // Extinción inmediata
-    adsr.end();
-  }
-}
-
-// Generación de las muestras de audio
-const vector<float> & Seno::synthesize() {
-  if (not adsr.active()) {
-    x.assign(x.size(), 0);
-    bActive = false;
-    return x;
-  }
-  else if (not bActive)
-    return x;
-
-  for (unsigned int i = 0; i < x.size(); ++i) {
-    // Lectura de la tabla mediante el método de redondeo al entero más cercano
-    x[i] = A * tbl[(int)(phase + 0.5)];
-    phase += step;
-    
-    // Bucle circular para mantener la fase dentro de los límites de la tabla
-    while (phase >= tbl.size() - 0.5) {
-      phase -= tbl.size();
+      if (!kv.to_int("N", N)) 
+        N = 40; // Valor por defecto si no encuentra N
+      
+      tbl.resize(N);
+      float phase_init = 0, step_init = 2 * M_PI / (float)N;
+      
+      for (int i = 0; i < N; ++i) {
+        tbl[i] = sin(phase_init);
+        phase_init += step_init;
+      }
+      phase = 0;
     }
-  }
-  
-  adsr(x); // Aplica la envolvente ADSR al bloque de audio generado
 
-  return x;
-}
-```
+    // Gestión de eventos MIDI (pulsar/soltar tecla)
+    void Seno::command(long cmd, long note, long vel) {
+      if (cmd == 9) {   // Key pressed: inicia el ataque
+        bActive = true;
+        adsr.start();
+        A = vel / 127.0;
+        // Cálculo del incremento de fase posicional según la frecuencia de la nota
+        this->step = 440 * pow(2, (note - 69) / 12.0) * tbl.size() / SamplingRate;
+      }
+      else if (cmd == 8) {  // Key released: inicia el release
+        adsr.stop();
+      }
+      else if (cmd == 0) {  // Extinción inmediata
+        adsr.end();
+      }
+    }
+
+    // Generación de las muestras de audio
+    const vector<float> & Seno::synthesize() {
+      if (not adsr.active()) {
+        x.assign(x.size(), 0);
+        bActive = false;
+        return x;
+      }
+      else if (not bActive)
+        return x;
+
+      for (unsigned int i = 0; i < x.size(); ++i) {
+        // Lectura de la tabla mediante el método de redondeo al entero más cercano
+        x[i] = A * tbl[(int)(phase + 0.5)];
+        phase += step;
+        
+        // Bucle circular para mantener la fase dentro de los límites de la tabla
+        while (phase >= tbl.size() - 0.5) {
+          phase -= tbl.size();
+        }
+      }
+      
+      adsr(x); // Aplica la envolvente ADSR al bloque de audio generado
+
+      return x;
+    }
+  ```
 
 
 - Explique qué método se ha seguido para asignar un valor a la señal a partir de los contenidos en la tabla, e incluya una gráfica en la que se vean claramente (use pelotitas en lugar de líneas) los valores de la tabla y los de la señal generada.
 
 
-  Para asignar un valor a la señal de audio a partir de los contenidos discretos de la tabla de ondas (tbl), el instrumento utiliza el método de Redondeo de Fase al entero más cercano. Como el incremento que tiene la fase es un valor decimal, puede ser que la variable phase acabe teniendo valores no enteros. Como el acceso a los índices de un vector en C++ necesita un valor entero lo que hace el programa es rendondear al entero inferior más cercano. De esta forma, si el valor de la fase es 2,2 o 2,8 el vector le asignará el valor de 2, cuando 2,8 se aproxima más a 3. Para evitar esto lo que se hace es sumarle 0,5 para que el valor de la fase se acabe redondeando al entero más cercano:
+    Para asignar un valor a la señal de audio a partir de los contenidos discretos de la tabla de ondas (tbl), el instrumento utiliza el método de Redondeo de Fase al entero más cercano. Como el incremento que tiene la fase es un valor decimal, puede ser que la variable phase acabe teniendo valores no enteros. Como el acceso a los índices de un vector en C++ necesita un valor entero lo que hace el programa es rendondear al entero inferior más cercano. De esta forma, si el valor de la fase es 2,2 o 2,8 el vector le asignará el valor de 2, cuando 2,8 se aproxima más a 3. Para evitar esto lo que se hace es sumarle 0,5 para que el valor de la fase se acabe redondeando al entero más cercano:
 
-  ```cpp
-    x[i] = A * tbl[(int)(phase + 0.5)];
-  ```
+    ```cpp
+      x[i] = A * tbl[(int)(phase + 0.5)];
+    ```
 
-  Esta es la gráfica en la que se ven claramente los valores de la tabla y los de la señal generada:
+    Esta es la gráfica en la que se ven claramente los valores de la tabla y los de la señal generada:
 
-  Se puede observar como los puntos de color azul representan el contenido estático y fijo almacenado en la tabla de ondas (tbl), y se ve la forma de un ciclo discreto de la función senosoidal pura. Por otro lado, las pelotitas de color rojo representan las muestras consecutivas de la señal de audio generadas en el tiempo por el método synthesize(). Como el incremento de fase (step) es mayor que 1, el motor de audio lee la tabla saltándose posiciones de manera indexada, logrando así generar una señal periódica de una frecuencia superior (más aguda).
+   Se puede observar como los puntos de color azul representan el contenido estático y fijo almacenado en la tabla de ondas (tbl), y se ve la forma de un ciclo discreto de la función senosoidal pura. Por otro lado, las pelotitas de color rojo representan las muestras consecutivas de la señal de audio generadas en el tiempo por el método synthesize(). Como el incremento de fase (step) es mayor que 1, el motor de audio lee la tabla saltándose posiciones de manera indexada, logrando así generar una señal periódica de una frecuencia superior (más aguda).
 
-  ![Gráfica de Síntesis por Tabla de Ondas](Ejercicio2.png)
+    ![Gráfica de Síntesis por Tabla de Ondas](Ejercicio2.png)
 
 
 - Si ha implementado la síntesis por tabla almacenada en fichero externo, incluya a continuación el código
@@ -171,15 +171,15 @@ const vector<float> & Seno::synthesize() {
   índice de modulación) en la señal generada (se valorará que la explicación esté contenida en las propias
   gráficas, sin necesidad de mucha *literatura*).
 
-  El trémolo es un efecto que consiste en variar el volumen (la amplitud) de una señal de forma periódica y automática. En cambio, el vibrato es una técnica que consiste en variar la afinación (la frecuencia) de un sonido de forma periódica, rápida y sutil. 
+    El trémolo es un efecto que consiste en variar el volumen (la amplitud) de una señal de forma periódica y automática. En cambio, el vibrato es una técnica que consiste en variar la afinación (la frecuencia) de un sonido de forma periódica, rápida y sutil. 
 
-  ![Gráfica Trémolo](grafica_tremolo.png)
+    ![Gráfica Trémolo](grafica_tremolo.png)
 
-  Se puede ver como la aplitud de la onda va aumentando y disminuyendo, porque está cambiando el volumen del señal
+    Se puede ver como la aplitud de la onda va aumentando y disminuyendo, porque está cambiando el volumen del señal
 
-  ![Gráfica Vibrato](grafica_vibrato.png)
+    ![Gráfica Vibrato](grafica_vibrato.png)
 
-  Aquí se ve como en un ciclo la longitud de onda va cambiando haciendo que cambie la nota.
+    Aquí se ve como en un ciclo la longitud de onda va cambiando haciendo que cambie la nota.
 
 - Si ha generado algún efecto por su cuenta, explique en qué consiste, cómo lo ha implementado y qué
   resultado ha producido. Incluya, en el directorio `work/ejemplos`, los ficheros necesarios para apreciar
@@ -202,8 +202,10 @@ deberá venir expresado en semitonos.
   * También puede colgar en el directorio work/doremi otras escalas usando sonidos *interesantes*. Por
     ejemplo, violines, pianos, percusiones, espadas láser de la
 	[Guerra de las Galaxias](https://www.starwars.com/), etc.
+ 
+  ##### Creación de los instrumentos 
 
-En la carpeta work se pueden observar algunos ficheros .wav representando a diferentes instrumentos. Hemos creado el clarinete, la campana, el piano, el violín, la percusión y el fagot.
+    En la carpeta work/doremi se pueden observar algunos ficheros .wav representando a diferentes instrumentos. Hemos creado el clarinete, la campana, el piano, el violín, la percusión y el fagot.
 
 
 ### Orquestación usando el programa synth.
