@@ -42,6 +42,22 @@ Para los cuatro casos, deberá incluir una gráfica en la que se visualice clara
 añadir la información necesaria para su correcta interpretación, aunque esa información puede reducirse a
 colocar etiquetas y títulos adecuados en la propia gráfica (se valorará positivamente esta alternativa).
 
+
+## Gráficas de las Envolventes ADSR
+
+## 1. Instrumento Genérico
+![Instrumento Genérico](Ejercicio1-1.png)
+
+## 2. Piano Rápido (Extinción Lenta)
+![Piano Rápido](Ejercicio1-2.png)
+
+## 3. Piano Lento (Nota Cortada)
+![Piano Lento](Ejercicio1-3.png)
+
+## 4. Instrumento Plano
+![Instrumento Plano](Ejercicio1-4.png)
+
+
 ### Instrumentos Dumb y Seno.
 
 Implemente el instrumento `Seno` tomando como modelo el `InstrumentDumb`. La señal **deberá** formarse
