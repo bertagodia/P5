@@ -1,6 +1,7 @@
 #include <iostream>
 #include "instrument_dumb.h"
 #include "seno.h"
+#include "FMSynth.h"
 
 /*
   For each new instrument:
@@ -16,12 +17,22 @@ namespace upc {
 			      const string &parameters) {
     Instrument * pInst = 0;
     //    cout << name << ": " << parameters << endl;
+
+cout << "--- DEBÚG ---" << endl;
+    cout << "Buscando instrumento con nombre: [" << name << "]" << endl;
+    cout << "Parámetros recibidos: [" << parameters << "]" << endl;
+    cout << "-------------" << endl;
+
     if (name == "InstrumentDumb") {
       pInst = (Instrument *) new InstrumentDumb(parameters);
     }
 
     else if (name == "Seno") { 
       pInst = (Instrument *) new Seno(parameters);
+    }
+
+    else if (name == "FMSynth") { 
+      pInst = (Instrument *) new FMSynth(parameters);
     }
 
     return pInst;

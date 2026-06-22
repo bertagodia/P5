@@ -1,0 +1,1 @@
+1   FMSynth 	N1=1.0; N2=1.414; I=14.0; ADSR_A=0.01;  ADSR_D=2.5; ADSR_S=0; ADSR_R=2.5; N=40;
