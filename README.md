@@ -64,9 +64,99 @@ Implemente el instrumento `Seno` tomando como modelo el `InstrumentDumb`. La se�
 mediante búsqueda de los valores en una tabla.
 
 - Incluya, a continuación, el código del fichero `seno.cpp` con los métodos de la clase Seno.
+
+```cpp
+#include <iostream>
+#include <math.h>
+#include "seno.h"
+#include "keyvalue.h"
+#include <stdlib.h>
+
+using namespace upc;
+using namespace std;
+
+// Constructor: Inicializa la tabla de ondas con un ciclo de seno
+Seno::Seno(const std::string &param) 
+  : adsr(SamplingRate, param) {
+  bActive = false;
+  x.resize(BSIZE);
+
+  KeyValue kv(param);
+  int N;
+
+  if (!kv.to_int("N", N)) 
+    N = 40; // Valor por defecto si no encuentra N
+  
+  tbl.resize(N);
+  float phase_init = 0, step_init = 2 * M_PI / (float)N;
+  
+  for (int i = 0; i < N; ++i) {
+    tbl[i] = sin(phase_init);
+    phase_init += step_init;
+  }
+  phase = 0;
+}
+
+// Gestión de eventos MIDI (pulsar/soltar tecla)
+void Seno::command(long cmd, long note, long vel) {
+  if (cmd == 9) {   // Key pressed: inicia el ataque
+    bActive = true;
+    adsr.start();
+    A = vel / 127.0;
+    // Cálculo del incremento de fase posicional según la frecuencia de la nota
+    this->step = 440 * pow(2, (note - 69) / 12.0) * tbl.size() / SamplingRate;
+  }
+  else if (cmd == 8) {  // Key released: inicia el release
+    adsr.stop();
+  }
+  else if (cmd == 0) {  // Extinción inmediata
+    adsr.end();
+  }
+}
+
+// Generación de las muestras de audio
+const vector<float> & Seno::synthesize() {
+  if (not adsr.active()) {
+    x.assign(x.size(), 0);
+    bActive = false;
+    return x;
+  }
+  else if (not bActive)
+    return x;
+
+  for (unsigned int i = 0; i < x.size(); ++i) {
+    // Lectura de la tabla mediante el método de redondeo al entero más cercano
+    x[i] = A * tbl[(int)(phase + 0.5)];
+    phase += step;
+    
+    // Bucle circular para mantener la fase dentro de los límites de la tabla
+    while (phase >= tbl.size() - 0.5) {
+      phase -= tbl.size();
+    }
+  }
+  
+  adsr(x); // Aplica la envolvente ADSR al bloque de audio generado
+
+  return x;
+}
+```
+
+
 - Explique qué método se ha seguido para asignar un valor a la señal a partir de los contenidos en la tabla,
   e incluya una gráfica en la que se vean claramente (use pelotitas en lugar de líneas) los valores de la
   tabla y los de la señal generada.
+
+
+  Para asignar un valor a la señal de audio a partir de los contenidos discretos de la tabla de ondas (tbl), el instrumento utiliza el método de Redondeo de Fase al entero más cercano. Como el incremento que tiene la fase es un valor decimal, puede ser que la variable phase acabe teniendo valores no enteros. Como el acceso a los índices de un vector en C++ necesita un valor entero lo que hace el programa es rendondear al entero inferior más cercano. De esta forma, si el valor de la fase es 2,2 o 2,8 el vector le asignará el valor de 2, cuando 2,8 se aproxima más a 3. Para evitar esto lo que se hace es sumarle 0,5 para que el valor de la fase se acabe redondeando al entero más cercano:
+
+  x[i] = A * tbl[(int)(phase + 0.5)];
+
+
+  Esta es la gráfica en la que se ven claramente los valores de la tabla y los de la señal generada:
+
+  ![Gráfica de Síntesis por Tabla de Ondas](Ejercicio2.png)
+
+
 - Si ha implementado la síntesis por tabla almacenada en fichero externo, incluya a continuación el código
   del método `command()`.
 
