@@ -204,6 +204,9 @@ deberá venir expresado en semitonos.
     ejemplo, violines, pianos, percusiones, espadas láser de la
 	[Guerra de las Galaxias](https://www.starwars.com/), etc.
 
+En la carpeta work se pueden observar algunos ficheros .wav representando a diferentes instrumentos. Hemos creado el clarinete, la campana, el piano, el violín, la percusión y el fagot.
+
+
 ### Orquestación usando el programa synth.
 
 Use el programa `synth` para generar canciones a partir de su partitura MIDI. Como mínimo, deberá incluir la
