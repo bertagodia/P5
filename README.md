@@ -46,16 +46,16 @@ colocar etiquetas y títulos adecuados en la propia gráfica (se valorará posit
 ### Gráficas de las Envolventes ADSR
 
   #### 1. Instrumento Genérico
-    ![Instrumento Genérico](grafics/Ejercicio1-1.png)
+  ![Instrumento Genérico](grafics/Ejercicio1-1.png)
 
   #### 2. Piano Rápido (Extinción Lenta)
-    ![Piano Rápido](grafics/Ejercicio1-2.png)
+  ![Piano Rápido](grafics/Ejercicio1-2.png)
 
   #### 3. Piano Lento (Nota Cortada)
-    ![Piano Lento](grafics/Ejercicio1-3.png)
+  ![Piano Lento](grafics/Ejercicio1-3.png)
 
   #### 4. Instrumento Plano
-    ![Instrumento Plano](grafics/Ejercicio1-4.png)
+  ![Instrumento Plano](grafics/Ejercicio1-4.png)
 
 
 ### Instrumentos Dumb y Seno.
