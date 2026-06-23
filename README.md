@@ -187,20 +187,20 @@ mediante búsqueda de los valores en una tabla.
   programa `synth`.
     
     ### Efecto Custom: Delay (Eco)
-      *   **En qué consiste:** Es un efecto de retardo o eco. Básicamente guarda las muestras que van entrando en un buffer para reproducirlas un poco más tarde mezcladas con el sonido original. Los parámetros que usa son:
-        *   `time`: El retraso en segundos entre cada repetición.
-        *   `feedback`: Cuánto volumen mantiene el eco en cada repetición (para que se vaya apagando poco a poco).
-        *   `mix`: La proporción de mezcla entre el sonido original limpio y el sonido con el eco.
+    *   **En qué consiste:** Es un efecto de retardo o eco. Básicamente guarda las muestras que van entrando en un buffer para reproducirlas un poco más tarde mezcladas con el sonido original. Los parámetros que usa son:
+      *   `time`: El retraso en segundos entre cada repetición.
+      *   `feedback`: Cuánto volumen mantiene el eco en cada repetición (para que se vaya apagando poco a poco).
+      *   `mix`: La proporción de mezcla entre el sonido original limpio y el sonido con el eco.
 
-      *   **Cómo se ha implementado:** Hemos programado la clase `Delay` en C++ (heredando de `Effect`) repartida en estos archivos:
-          *   `delay.h`: Define las variables del efecto (`time`, `feedback`, `mix`), el búfer (`std::vector<float>`) y el puntero de escritura circular.
-          *   `delay.cpp`: 
-          *   **Constructor:** Reserva el tamaño del búfer según el retardo y la frecuencia de muestreo ($N = \text{time} \times 44100$).
-          *   **`operator()` (Procesamiento):** Implementa el bucle del búfer circular. Lee la muestra retardada, calcula la salida mezclando la señal limpia y con eco (`mix`), y guarda en el búfer la entrada sumada al eco atenuado (`feedback`) para la siguiente repetición.
-          *   `effect.cpp`: Registramos el efecto en `get_effect()` para poder instanciarlo con la palabra `"Delay"`.
-          *   `meson.build`: Añadimos `effects/delay.cpp` a las fuentes para compilar con `make release`.
+    *   **Cómo se ha implementado:** Hemos programado la clase `Delay` en C++ (heredando de `Effect`) repartida en estos archivos:
+      *   `delay.h`: Define las variables del efecto (`time`, `feedback`, `mix`), el búfer (`std::vector<float>`) y el puntero de escritura circular.
+        *   `delay.cpp`: 
+        *   **Constructor:** Reserva el tamaño del búfer según el retardo y la frecuencia de muestreo ($N = \text{time} \times 44100$).
+        *   **`operator()` (Procesamiento):** Implementa el bucle del búfer circular. Lee la muestra retardada, calcula la salida mezclando la señal limpia y con eco (`mix`), y guarda en el búfer la entrada sumada al eco atenuado (`feedback`) para la siguiente repetición.
+        *   `effect.cpp`: Registramos el efecto en `get_effect()` para poder instanciarlo con la palabra `"Delay"`.
+        *   `meson.build`: Añadimos `effects/delay.cpp` a las fuentes para compilar con `make release`.
  
-      *   **Resultado y observaciones:** El efecto hace que la melodía suene con más profundidad y eco. Un detalle importante que vimos al probarlo es que el sintetizador deja de aplicar efectos a una nota cuando su envolvente ADSR termina la fase de release (`ADSR_R`). Por eso, si el release de la nota es muy corto (por ejemplo 0.2s) y el delay es de 0.25s, el instrumento se desactiva y el eco se corta de golpe. Para solucionarlo, hay que poner un release más largo en el instrumento (por ejemplo `ADSR_R=1.5`) para dejar que suenen las repeticiones del delay.
+    *   **Resultado y observaciones:** El efecto hace que la melodía suene con más profundidad y eco. Un detalle importante que vimos al probarlo es que el sintetizador deja de aplicar efectos a una nota cuando su envolvente ADSR termina la fase de release (`ADSR_R`). Por eso, si el release de la nota es muy corto (por ejemplo 0.2s) y el delay es de 0.25s, el instrumento se desactiva y el eco se corta de golpe. Para solucionarlo, hay que poner un release más largo en el instrumento (por ejemplo `ADSR_R=1.5`) para dejar que suenen las repeticiones del delay.
 
 
     
