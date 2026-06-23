@@ -188,19 +188,16 @@ mediante búsqueda de los valores en una tabla.
     
     ### Efecto Custom: Delay (Eco)
       *   **En qué consiste:** Es un efecto de retardo o eco. Básicamente guarda las muestras que van entrando en un buffer para reproducirlas un poco más tarde mezcladas con el sonido original. Los parámetros que usa son:
-         *   `time`: El retraso en segundos entre cada repetición.
-         *   `feedback`: Cuánto volumen mantiene el eco en cada repetición (para que se vaya apagando poco a poco).
-          
-         *   `mix`: La proporción de mezcla entre el sonido original limpio y el sonido con el eco.
+        *   `time`: El retraso en segundos entre cada repetición.
+        *   `feedback`: Cuánto volumen mantiene el eco en cada repetición (para que se vaya apagando poco a poco).
+        *   `mix`: La proporción de mezcla entre el sonido original limpio y el sonido con el eco.
 
-      *   **Cómo se ha implementado:** 
-
-            Hemos programado la clase `Delay` en C++ (heredando de `Effect`) repartida en estos archivos:
-             *   `delay.h`: Define las variables del efecto (`time`, `feedback`, `mix`), el búfer (`std::vector<float>`) y el puntero de escritura circular.
-             *   `delay.cpp`: 
-              *   **Constructor:** Reserva el tamaño del búfer según el retardo y la frecuencia de muestreo ($N = \text{time} \times 44100$).
-              *   **`operator()` (Procesamiento):** Implementa el bucle del búfer circular. Lee la muestra retardada, calcula la salida mezclando la señal limpia y con eco (`mix`), y guarda en el búfer la entrada sumada al eco atenuado (`feedback`) para la siguiente repetición.
-           *   `effect.cpp`: Registramos el efecto en `get_effect()` para poder instanciarlo con la palabra `"Delay"`.
+      *   **Cómo se ha implementado:** Hemos programado la clase `Delay` en C++ (heredando de `Effect`) repartida en estos archivos:
+          *   `delay.h`: Define las variables del efecto (`time`, `feedback`, `mix`), el búfer (`std::vector<float>`) y el puntero de escritura circular.
+          *   `delay.cpp`: 
+          *   **Constructor:** Reserva el tamaño del búfer según el retardo y la frecuencia de muestreo ($N = \text{time} \times 44100$).
+          *   **`operator()` (Procesamiento):** Implementa el bucle del búfer circular. Lee la muestra retardada, calcula la salida mezclando la señal limpia y con eco (`mix`), y guarda en el búfer la entrada sumada al eco atenuado (`feedback`) para la siguiente repetición.
+          *   `effect.cpp`: Registramos el efecto en `get_effect()` para poder instanciarlo con la palabra `"Delay"`.
           *   `meson.build`: Añadimos `effects/delay.cpp` a las fuentes para compilar con `make release`.
  
       *   **Resultado y observaciones:** El efecto hace que la melodía suene con más profundidad y eco. Un detalle importante que vimos al probarlo es que el sintetizador deja de aplicar efectos a una nota cuando su envolvente ADSR termina la fase de release (`ADSR_R`). Por eso, si el release de la nota es muy corto (por ejemplo 0.2s) y el delay es de 0.25s, el instrumento se desactiva y el eco se corta de golpe. Para solucionarlo, hay que poner un release más largo en el instrumento (por ejemplo `ADSR_R=1.5`) para dejar que suenen las repeticiones del delay.
@@ -304,6 +301,42 @@ de su agrado o composición. Se valorará la riqueza instrumental, su modelado y
   `work/music`.
 - Indique, a continuación, la orden necesaria para generar cada una de las señales usando los distintos
   ficheros.
+
+  ### Orquestación opcional: One Day More (Les Misérables)
+  
+    Instrumentos (onedaymore.orc)
+
+    Todos los instrumentos utilizan síntesis FM (FMSynth). Los parámetros N1, N2 e I controlan el timbre: N1/N2 definen la relación portadora/moduladora e I el índice de modulación (lo "rico" que es el espectro armónico).
+
+    Como hay muchos canales, se ha optado por un ataque y caída (decay) más largos para los canales principales (clarinete, violín, flauta y trompa) y un ataque más corto para los canales secundarios (saxofón, trompeta y trombón). Los valores de ADSR_A, ADSR_D, ADSR_S y ADSR_R se han ajustado para conseguir un sonido más natural y expresivo.
+
+    - Canal 3 — Piano acústico : Acompañamiento armónico principal. I=2.5 y decay largo para simular el resonador del piano.
+    - Canal 11 — Clarinete : Voz de Jean Valjean. N2=3.0 para un timbre de viento-madera, release largo para frases legato.
+    - Canal 12 — Violín : Voz de Marius & Cosette. I baja (1.5) y attack suave para un sonido romántico y cálido.
+    - Canal 13 — Flauta : Voz de Éponine. I=1.2, el más suave de las voces, para transmitir fragilidad.
+    - Canal 14 — Trompa francesa : Voz de Javert. I=4.0, ataque rápido y sonido duro para reflejar su carácter autoritario.
+    - Canal 15 — Saxofón tenor : Thénardier. I=5.0 para un timbre grotesco y exagerado, coherente con el personaje.
+    - Canal 16 — Trompeta : Enjolras. I=5.5, muy brillante, carácter heroico y directo.
+    - Canal 17 — Trombón : Estudiantes rebeldes. N2=1.5, potente y metálico, representando el grupo como bloque.
+    - Canal 18 — Flauta orquestal : I=0.8, el valor más bajo de todos, sonido casi sinusoidal y aéreo.
+    - Canal 19 — Cuerdas : Sección de cuerdas. Attack=0.20 y release=0.40 para un legato orquestal real, sin clics.
+    - Canal 20 — Cuerdas pizzicato : Notas de tan solo 30 ticks (~0.2s). Attack=0.005 y decay corto para adaptarse a esta duración y sonar como un pizzicato o arpa.
+    - Canal 21 — Contrabajo : Bajo orquestal. Decay=0.4, base armónica de notas largas.
+    - Canal 22 — Sección de metales : Brass tutti. I=5.0, gran presencia espectral para los momentos épicos.
+    - Canal 23 — Campanillas : Efecto orquestal puntual. N2=7.0 e I=8.0 para un sonido inarmónico de campanilla.
+    - Canal 24 — Pad orquestal: Relleno armónico de fondo. Attack=0.10, suave, refuerza la armonía sin destacar.
+    
+    La orden para generar la señal es la siguiente (ejecutada desde el directorio `work/music/`):
+    ```sh
+      ~/PAV/bin/synth -b 100 -t 74 -g 0.05 onedaymore.orc onedaymore.sco onedaymore1.wav    
+    ```
+    Parámetros globales:
+
+    *  -b 100: Velocidad o Tempo en pulsos por minuto (BPM). Establece el ritmo base de la partitura. Un valor mayor haría que la canción sonara demasiado rápida, impidiendo distinguir las notas y la melodía.
+    *  -t 74: Resolución temporal en Ticks Per Beat (TPB) extraída directamente del fichero MIDI original. Utilizar cualquier otro valor alteraría las proporciones de las duraciones de las notas y desincronizaría la partitura.
+    *  -g 0.05: Ganancia global de 0.05. Con 15 canales activos a la vez, la suma de amplitudes superaría fácilmente 1.0 y produciría saturación, por lo que atenuamos la mezcla final.
+
+
 
 > NOTA:
 >
