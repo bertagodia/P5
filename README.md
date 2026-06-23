@@ -328,13 +328,13 @@ de su agrado o composición. Se valorará la riqueza instrumental, su modelado y
     
     La orden para generar la señal es la siguiente (ejecutada desde el directorio `work/music/`):
     ```sh
-      ~/PAV/bin/synth -b 100 -t 74 -g 0.05 onedaymore.orc onedaymore.sco onedaymore1.wav    
+      ~/PAV/bin/synth -b 100 -t 74 -g 0.02 onedaymore.orc onedaymore.sco onedaymore.wav    
     ```
     Parámetros globales:
 
     *  -b 100: Velocidad o Tempo en pulsos por minuto (BPM). Establece el ritmo base de la partitura. Un valor mayor haría que la canción sonara demasiado rápida, impidiendo distinguir las notas y la melodía.
     *  -t 74: Resolución temporal en Ticks Per Beat (TPB) extraída directamente del fichero MIDI original. Utilizar cualquier otro valor alteraría las proporciones de las duraciones de las notas y desincronizaría la partitura.
-    *  -g 0.05: Ganancia global de 0.05. Con 15 canales activos a la vez, la suma de amplitudes superaría fácilmente 1.0 y produciría saturación, por lo que atenuamos la mezcla final.
+    *  -g 0.02: Ganancia global de 0.02. Con 15 canales activos a la vez, la suma de amplitudes superaría fácilmente 1.0 y produciría saturación, por lo que atenuamos la mezcla final.
 
 
 
