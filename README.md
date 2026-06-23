@@ -153,7 +153,7 @@ mediante búsqueda de los valores en una tabla.
 
     Esta es la gráfica en la que se ven claramente los valores de la tabla y los de la señal generada:
 
-    Se puede observar como los puntos de color azul representan el contenido estático y fijo almacenado en la tabla de ondas (tbl), y se ve la forma de un ciclo discreto de la función senosoidal pura. Por otro lado, las pelotitas de color rojo representan las muestras consecutivas de la señal de audio generadas en el tiempo por el método synthesize(). Como el incremento de fase (step) es mayor que 1, el motor de audio lee la tabla saltándose posiciones de manera indexada, logrando así generar una señal periódica de una frecuencia superior (más aguda).
+    Se puede observar como los puntos de color lila representan el contenido estático y fijo almacenado en la tabla de ondas (tbl), y se ve la forma de un ciclo discreto de la función senosoidal pura. Por otro lado, los puntos de color rojo representan las muestras consecutivas de la señal de audio generadas en el tiempo por el método synthesize(). Como el incremento de fase (step) es mayor que 1, el motor de audio lee la tabla saltándose posiciones de manera indexada, logrando así generar una señal periódica de una frecuencia superior (más aguda).
 
     ![Gráfica de Síntesis por Tabla de Ondas](grafics/Ejercicio2.png)
 
