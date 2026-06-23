@@ -291,7 +291,6 @@ Use el programa `synth` para generar canciones a partir de su partitura MIDI. Co
     ```sh
       ~/PAV/bin/synth -g 0.3 toystory.orc ToyStory_A_Friend_in_me.sco toystory.wav 
     ```
-
     Esta orden ejecuta el programa synth para sintetizar el archivo de audio toystory.wav a partir de la partitura de notas (ToyStory_A_Friend_in_me.sco) y la asignación de instrumentos de la orquesta (toystory.orc). Se ha incluido el parámetro de ganancia -g 0.3 porque, al sonar el solista y el bajo simultáneamente, la suma de ambas señales superaba la amplitud máxima digital de 1.0, provocando saturación y distorsión (clipping). Con un factor de 0.3 se atenúa la mezcla final para garantizar un sonido limpio y sin ruido.
 
 También puede orquestar otros temas más complejos, como la banda sonora de *Hawaii5-0* o el villacinco de
@@ -304,37 +303,38 @@ de su agrado o composición. Se valorará la riqueza instrumental, su modelado y
 
   ### Orquestación opcional: One Day More (Les Misérables)
   
-    Instrumentos (onedaymore.orc)
+    **Creación de los instrumentos**
 
-    Todos los instrumentos utilizan síntesis FM (FMSynth). Los parámetros N1, N2 e I controlan el timbre: N1/N2 definen la relación portadora/moduladora e I el índice de modulación (lo "rico" que es el espectro armónico).
+      Todos los instrumentos utilizan síntesis FM (FMSynth). Los parámetros N1, N2 e I controlan el timbre: N1/N2 definen la relación portadora/moduladora e I el índice de modulación (lo "rico" que es el espectro armónico).
 
-    Como hay muchos canales, se ha optado por un ataque y caída (decay) más largos para los canales principales (clarinete, violín, flauta y trompa) y un ataque más corto para los canales secundarios (saxofón, trompeta y trombón). Los valores de ADSR_A, ADSR_D, ADSR_S y ADSR_R se han ajustado para conseguir un sonido más natural y expresivo.
+      Como hay muchos canales, se ha optado por un ataque y caída (decay) más largos para los canales principales (clarinete, violín, flauta y trompa) y un ataque más corto para los canales secundarios (saxofón, trompeta y trombón). Los valores de ADSR_A, ADSR_D, ADSR_S y ADSR_R se han ajustado para conseguir un sonido más natural y expresivo.
 
-    - Canal 3 — Piano acústico : Acompañamiento armónico principal. I=2.5 y decay largo para simular el resonador del piano.
-    - Canal 11 — Clarinete : Voz de Jean Valjean. N2=3.0 para un timbre de viento-madera, release largo para frases legato.
-    - Canal 12 — Violín : Voz de Marius & Cosette. I baja (1.5) y attack suave para un sonido romántico y cálido.
-    - Canal 13 — Flauta : Voz de Éponine. I=1.2, el más suave de las voces, para transmitir fragilidad.
-    - Canal 14 — Trompa francesa : Voz de Javert. I=4.0, ataque rápido y sonido duro para reflejar su carácter autoritario.
-    - Canal 15 — Saxofón tenor : Thénardier. I=5.0 para un timbre grotesco y exagerado, coherente con el personaje.
-    - Canal 16 — Trompeta : Enjolras. I=5.5, muy brillante, carácter heroico y directo.
-    - Canal 17 — Trombón : Estudiantes rebeldes. N2=1.5, potente y metálico, representando el grupo como bloque.
-    - Canal 18 — Flauta orquestal : I=0.8, el valor más bajo de todos, sonido casi sinusoidal y aéreo.
-    - Canal 19 — Cuerdas : Sección de cuerdas. Attack=0.20 y release=0.40 para un legato orquestal real, sin clics.
-    - Canal 20 — Cuerdas pizzicato : Notas de tan solo 30 ticks (~0.2s). Attack=0.005 y decay corto para adaptarse a esta duración y sonar como un pizzicato o arpa.
-    - Canal 21 — Contrabajo : Bajo orquestal. Decay=0.4, base armónica de notas largas.
-    - Canal 22 — Sección de metales : Brass tutti. I=5.0, gran presencia espectral para los momentos épicos.
-    - Canal 23 — Campanillas : Efecto orquestal puntual. N2=7.0 e I=8.0 para un sonido inarmónico de campanilla.
-    - Canal 24 — Pad orquestal: Relleno armónico de fondo. Attack=0.10, suave, refuerza la armonía sin destacar.
+      - Canal 3 — **Piano acústico** : Acompañamiento armónico principal. I=2.5 y decay largo para simular el resonador del piano.
+      - Canal 11 — **Clarinet** : Voz de Jean Valjean. N2=3.0 para un timbre de viento-madera, release largo para frases legato.
+      - Canal 12 — **Violín** : Voz de Marius & Cosette. I baja (1.5) y attack suave para un sonido romántico y cálido.
+      - Canal 13 — **Flauta** : Voz de Éponine. I=1.2, el más suave de las voces, para transmitir fragilidad.
+      - Canal 14 — **Trompa francesa** : Voz de Javert. I=4.0, ataque rápido y sonido duro para reflejar su carácter autoritario.
+      - Canal 15 — **Saxofón tenor** : Thénardier. I=5.0 para un timbre grotesco y exagerado, coherente con el personaje.
+      - Canal 16 — **Trompeta** : Enjolras. I=5.5, muy brillante, carácter heroico y directo.
+      - Canal 17 — **Trombón** : Estudiantes rebeldes. N2=1.5, potente y metálico, representando el grupo como bloque.
+      - Canal 18 — **Flauta orquestal** : I=0.8, el valor más bajo de todos, sonido casi sinusoidal y aéreo.
+      - Canal 19 — **Cuerdas** : Sección de cuerdas. Attack=0.20 y release=0.40 para un legato orquestal real, sin clics.
+      - Canal 20 — **Cuerdas pizzicato** : Notas de tan solo 30 ticks (~0.2s). Attack=0.01 y decay corto para adaptarse a esta duración y sonar como un pizzicato o arpa, pero evitando clics.
+      - Canal 21 — **Contrabajo** : Bajo orquestal. Decay=0.4, base armónica de notas largas.
+      - Canal 22 — **Sección de metales** : Brass tutti. I=5.0, gran presencia espectral para los momentos épicos.
+      - Canal 23 — **Campanillas** : Efecto orquestal puntual. N2=7.0 e I=8.0, con ataque de 0.02 para suavizar el inicio.
+      - Canal 24 — **Pad orquestal**: Relleno armónico de fondo. Attack=0.10 y release=0.40, suaves, para reforzar la armonía sin destacar y evitar cortes abruptos (clics).
     
-    La orden para generar la señal es la siguiente (ejecutada desde el directorio `work/music/`):
-    ```sh
-      ~/PAV/bin/synth -b 100 -t 74 -g 0.02 onedaymore.orc onedaymore.sco onedaymore.wav    
-    ```
-    Parámetros globales:
+    **Generación de la señal**
+      La orden para generar la señal es la siguiente (ejecutada desde el directorio `work/music/`):
+      ```sh
+        ~/PAV/bin/synth -b 100 -t 74 -g 0.05 onedaymore.orc onedaymore.sco onedaymore.wav    
+      ```
+      Parámetros globales:
 
-    *  -b 100: Velocidad o Tempo en pulsos por minuto (BPM). Establece el ritmo base de la partitura. Un valor mayor haría que la canción sonara demasiado rápida, impidiendo distinguir las notas y la melodía.
-    *  -t 74: Resolución temporal en Ticks Per Beat (TPB) extraída directamente del fichero MIDI original. Utilizar cualquier otro valor alteraría las proporciones de las duraciones de las notas y desincronizaría la partitura.
-    *  -g 0.02: Ganancia global de 0.02. Con 15 canales activos a la vez, la suma de amplitudes superaría fácilmente 1.0 y produciría saturación, por lo que atenuamos la mezcla final.
+      *  -b 100: Velocidad o Tempo en pulsos por minuto (BPM). Establece el ritmo base de la partitura. Un valor mayor haría que la canción sonara demasiado rápida, impidiendo distinguir las notas y la melodía.
+      *  -t 74: Resolución temporal en Ticks Per Beat (TPB) extraída directamente del fichero MIDI original. Utilizar cualquier otro valor alteraría las proporciones de las duraciones de las notas y desincronizaría la partitura.
+      *  -g 0.05: Ganancia global de 0.05. Con 15 canales activos a la vez, la suma de amplitudes superaría fácilmente 1.0 y produciría saturación, por lo que atenuamos la mezcla final.
 
 
 
